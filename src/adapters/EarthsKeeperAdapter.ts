@@ -1,28 +1,28 @@
 import { Adapter } from './Adapter';
 import { AdapterType } from '../config';
 import { SIGN_TYPE, TSignData } from '../prepareTx';
-import { utils } from '@waves/signature-generator';
+import { utils } from '@earths/signature-generator';
 
-export class WavesKeeperAdapter extends Adapter {
+export class EarthsKeeperAdapter extends Adapter {
 
-    public static type = AdapterType.WavesKeeper;
-    public static adapter: WavesKeeperAdapter;
+    public static type = AdapterType.EarthsKeeper;
+    public static adapter: EarthsKeeperAdapter;
     private static _onUpdateCb: Array<(...args) => any> = [];
     private _onDestoryCb = [];
     private _needDestroy = false;
     private _address: string;
     private _pKey: string;
-    private static _getApiCb: () => IWavesKeeper;
+    private static _getApiCb: () => IEarthsKeeper;
     
-    private static _api: IWavesKeeper;
+    private static _api: IEarthsKeeper;
 
     constructor( { address, publicKey }) {
         super();
-        WavesKeeperAdapter._initExtension();
+        EarthsKeeperAdapter._initExtension();
         this._address = address;
         this._pKey = publicKey;
 
-        WavesKeeperAdapter.onUpdate((state) => {
+        EarthsKeeperAdapter.onUpdate((state) => {
             if (!state.locked && (!state.account || state.account.address !== this._address)) {
                 this._needDestroy = true;
                 this._onDestoryCb.forEach(cb => cb());
@@ -32,8 +32,8 @@ export class WavesKeeperAdapter extends Adapter {
 
     public async isAvailable(ignoreLocked = false): Promise<void> {
         try {
-            await WavesKeeperAdapter.isAvailable();
-            const data = await WavesKeeperAdapter._api.publicState();
+            await EarthsKeeperAdapter.isAvailable();
+            const data = await EarthsKeeperAdapter._api.publicState();
             
             if (data.locked) {
                 return ignoreLocked ? Promise.resolve() : Promise.reject({ code: 4, msg: 'Keeper is locked' });
@@ -49,8 +49,8 @@ export class WavesKeeperAdapter extends Adapter {
     }
     
     public async isLocked() {
-        await WavesKeeperAdapter.isAvailable();
-        const data = await WavesKeeperAdapter._api.publicState();
+        await EarthsKeeperAdapter.isAvailable();
+        const data = await EarthsKeeperAdapter._api.publicState();
         
         if (data.locked) {
             return Promise.resolve();
@@ -79,12 +79,12 @@ export class WavesKeeperAdapter extends Adapter {
 
     public async signRequest(bytes: Uint8Array, _?, signData?): Promise<string> {
         await this.isAvailable(true);
-        return await WavesKeeperAdapter._api.signRequest(signData);
+        return await EarthsKeeperAdapter._api.signRequest(signData);
     }
 
     public async signTransaction(bytes: Uint8Array, amountPrecision: number, signData): Promise<string> {
         await this.isAvailable(true);
-        const dataStr = await WavesKeeperAdapter._api.signTransaction(signData);
+        const dataStr = await EarthsKeeperAdapter._api.signTransaction(signData);
         const { proofs, signature } = JSON.parse(dataStr);
         return signature || proofs.pop();
     }
@@ -94,13 +94,13 @@ export class WavesKeeperAdapter extends Adapter {
         let promise;
         switch (signData.type) {
             case SIGN_TYPE.CREATE_ORDER:
-                promise = WavesKeeperAdapter._api.signOrder(signData);
+                promise = EarthsKeeperAdapter._api.signOrder(signData);
                 break;
             case SIGN_TYPE.CANCEL_ORDER:
-                promise = WavesKeeperAdapter._api.signCancelOrder(signData);
+                promise = EarthsKeeperAdapter._api.signCancelOrder(signData);
                 break;
             default:
-                return WavesKeeperAdapter._api.signRequest(signData);
+                return EarthsKeeperAdapter._api.signRequest(signData);
         }
 
         const dataStr = await promise;
@@ -118,10 +118,10 @@ export class WavesKeeperAdapter extends Adapter {
     }
 
     public static async isAvailable() {
-        WavesKeeperAdapter._initExtension();
+        EarthsKeeperAdapter._initExtension();
         
         if (!this._api) {
-            throw { code: 0, message: 'Install WavesKeeper' };
+            throw { code: 0, message: 'Install EarthsKeeper' };
         }
 
         let error, data;
@@ -133,7 +133,7 @@ export class WavesKeeperAdapter extends Adapter {
 
         if (!error && data) {
             if (!data.locked && !data.account) {
-                error = { code: 2, message: 'No accounts in waveskeeper' };
+                error = { code: 2, message: 'No accounts in earthskeeper' };
             } else if (!data.locked && (!data.account.address || !utils.crypto.isValidAddress(data.account.address))) {
                 error = { code: 3, message: 'Selected network incorrect' };
             }
@@ -147,8 +147,8 @@ export class WavesKeeperAdapter extends Adapter {
     }
 
     public static async getUserList() {
-        await WavesKeeperAdapter.isAvailable();
-        return WavesKeeperAdapter._api.publicState().then(({ account }) => [account]);
+        await EarthsKeeperAdapter.isAvailable();
+        return EarthsKeeperAdapter._api.publicState().then(({ account }) => [account]);
     }
 
     public static initOptions(options) {
@@ -166,24 +166,24 @@ export class WavesKeeperAdapter extends Adapter {
             extensionCb = () => extension;
         }
         
-        WavesKeeperAdapter._getApiCb = extensionCb;
+        EarthsKeeperAdapter._getApiCb = extensionCb;
     }
     
     public static onUpdate(cb) {
-        WavesKeeperAdapter._onUpdateCb.push(cb);
+        EarthsKeeperAdapter._onUpdateCb.push(cb);
     }
     
     
     private static _initExtension() {
-        if (WavesKeeperAdapter._api || !WavesKeeperAdapter._getApiCb) {
+        if (EarthsKeeperAdapter._api || !EarthsKeeperAdapter._getApiCb) {
             return null;
         }
         
-        this._api = WavesKeeperAdapter._getApiCb();
+        this._api = EarthsKeeperAdapter._getApiCb();
     
         if (this._api) {
             this._api.on('update', (state) => {
-                for (const cb of WavesKeeperAdapter._onUpdateCb) {
+                for (const cb of EarthsKeeperAdapter._onUpdateCb) {
                     cb(state);
                 }
             });
@@ -192,7 +192,7 @@ export class WavesKeeperAdapter extends Adapter {
 }
 
 
-interface IWavesKeeper {
+interface IEarthsKeeper {
     auth: (data: IAuth) => Promise<IAuthData>;
     signTransaction: (data: TSignData) => Promise<any>;
     signOrder: (data) => Promise<any>;

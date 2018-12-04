@@ -2,7 +2,7 @@ node_modules/
 src/**/*.js
 src/**/*.js.map
 dist
-!dist/waves-signature-adapter.js
+!dist/earths-signature-adapter.js
 .idea
 coverage/
 package-lock.json

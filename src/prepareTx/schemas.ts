@@ -1,6 +1,6 @@
 import { prepare } from './prepare';
 import { SIGN_TYPE } from './constants';
-import { config, TRANSACTION_TYPE_VERSION } from '@waves/signature-generator';
+import { config, TRANSACTION_TYPE_VERSION } from '@earths/signature-generator';
 import * as fieldsType from './fieldTypes';
 
 const { schema, wrap, signSchema, processors } = prepare;
@@ -11,7 +11,7 @@ const SIGN_SCHEMA = {
         fieldsType.timestamp('timestamp', null, processors.timestamp),
     ],
     [SIGN_TYPE.AUTH]: [
-        fieldsType.string('prefix', null, processors.addValue('WavesWalletAuthentication'), true),
+        fieldsType.string('prefix', null, processors.addValue('EarthsWalletAuthentication'), true),
         fieldsType.string('host'),
         fieldsType.string('data'),
     ],

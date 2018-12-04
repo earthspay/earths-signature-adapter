@@ -6,7 +6,7 @@ import {
     StringWithLength,
     Long,
     generate
-} from '@waves/signature-generator';
+} from '@earths/signature-generator';
 import { IAuthData } from './interfaces';
 
 export enum TRANSACTION_TYPE_NUMBER {

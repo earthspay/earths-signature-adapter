@@ -1,6 +1,6 @@
 import { Adapter, IUser } from './Adapter';
 import { AdapterType } from '../config';
-import { Seed, utils } from '@waves/signature-generator';
+import { Seed, utils } from '@earths/signature-generator';
 
 
 export class SeedAdapter extends Adapter {

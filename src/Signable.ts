@@ -1,6 +1,6 @@
 import { getSchemaByType, SIGN_TYPE, SIGN_TYPES, TSignData } from './prepareTx';
 import { Adapter } from './adapters';
-import { ISignatureGeneratorConstructor, utils } from '@waves/signature-generator';
+import { ISignatureGeneratorConstructor, utils } from '@earths/signature-generator';
 
 
 export class Signable {

@@ -1,5 +1,5 @@
-import { WavesKeeperAdapter } from '../src/adapters/WavesKeeperAdapter';
-import { Asset, Money, BigNumber } from '@waves/data-entities';
+import { EarthsKeeperAdapter } from '../src/adapters/EarthsKeeperAdapter';
+import { Asset, Money, BigNumber } from '@earths/data-entities';
 import { TRANSACTION_TYPE_NUMBER } from '../src/prepareTx'
 
 const testAsset = new Asset({
@@ -16,7 +16,7 @@ const testAsset = new Asset({
 });
 
 const keeperMock = {
-        auth: async (data) => ({"data":"test","prefix":"WavesWalletAuthentication","host":"www.yandex.ru","name":"test","address":"3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj","publicKey":"2M25DqL2W4rGFLCFadgATboS8EPqyWAN3DjH12AH5Kdr","signature":"3xvbSznhRTgDP5vMSoPpqwVf29hSdDQLFpdbtVaMHCyzuFFEgSodB7MXZTescxcYiVtR9wCgTGmZPWTApMVMg6qP"}),
+        auth: async (data) => ({"data":"test","prefix":"EarthsWalletAuthentication","host":"www.yandex.ru","name":"test","address":"3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj","publicKey":"2M25DqL2W4rGFLCFadgATboS8EPqyWAN3DjH12AH5Kdr","signature":"3xvbSznhRTgDP5vMSoPpqwVf29hSdDQLFpdbtVaMHCyzuFFEgSodB7MXZTescxcYiVtR9wCgTGmZPWTApMVMg6qP"}),
         signTransaction: async data => {
             switch (data.type) {
                 case TRANSACTION_TYPE_NUMBER.SPONSORSHIP:
@@ -51,13 +51,13 @@ const keeperMock = {
     };
                                                                                 
 
-describe('WavesKeeper adapter test', () => {
+describe('EarthsKeeper adapter test', () => {
     
     it('Test connect to extension', async () => {
-        WavesKeeperAdapter.setApiExtension(keeperMock);
+        EarthsKeeperAdapter.setApiExtension(keeperMock);
         try {
-            const users = await WavesKeeperAdapter.getUserList();
-            const adapter = new WavesKeeperAdapter(users[0]);
+            const users = await EarthsKeeperAdapter.getUserList();
+            const adapter = new EarthsKeeperAdapter(users[0]);
             await adapter.isAvailable();
         } catch (e) {
             expect('Fail create adapter').toBe('Done')
@@ -66,11 +66,11 @@ describe('WavesKeeper adapter test', () => {
     
     it('Test connect to extension by cb', async () => {
         let mock = null;
-        WavesKeeperAdapter.setApiExtension(() => mock);
+        EarthsKeeperAdapter.setApiExtension(() => mock);
         
         try {
-            const users = await WavesKeeperAdapter.getUserList();
-            const adapter = new WavesKeeperAdapter(users[0]);
+            const users = await EarthsKeeperAdapter.getUserList();
+            const adapter = new EarthsKeeperAdapter(users[0]);
             await adapter.isAvailable();
             expect('Fail init Adapter').toBe('Done')
         } catch (e) {
@@ -78,8 +78,8 @@ describe('WavesKeeper adapter test', () => {
         }
         
         try {
-            const users = await WavesKeeperAdapter.getUserList();
-            const adapter = new WavesKeeperAdapter(users[0]);
+            const users = await EarthsKeeperAdapter.getUserList();
+            const adapter = new EarthsKeeperAdapter(users[0]);
             await adapter.isAvailable();
             
         } catch (e) {
@@ -100,9 +100,9 @@ describe('WavesKeeper adapter test', () => {
         };
         
         try {
-            WavesKeeperAdapter.setApiExtension(keeperMock);
-            const users = await WavesKeeperAdapter.getUserList();
-            const adapter = new WavesKeeperAdapter(users[0]);
+            EarthsKeeperAdapter.setApiExtension(keeperMock);
+            const users = await EarthsKeeperAdapter.getUserList();
+            const adapter = new EarthsKeeperAdapter(users[0]);
             const signable = adapter.makeSignable(data as any);
             const result = await signable.getDataForApi() as any;
             expect(result.proofs[0]).toBe('realProof')

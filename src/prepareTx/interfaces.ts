@@ -1,6 +1,6 @@
 import { SIGN_TYPE } from './constants';
-import { IDATA_ENTRY, ISignatureGeneratorConstructor } from '@waves/signature-generator/src/signatureFactory/interface';
-import { Money, BigNumber } from '@waves/data-entities';
+import { IDATA_ENTRY, ISignatureGeneratorConstructor } from '@earths/signature-generator/src/signatureFactory/interface';
+import { Money, BigNumber } from '@earths/data-entities';
 
 export type TSignData =
     ISignAuthData |

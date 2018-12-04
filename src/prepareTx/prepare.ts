@@ -1,8 +1,8 @@
-import { Money, BigNumber, AssetPair, OrderPrice } from '@waves/data-entities';
-import { WAVES_ID, libs, config } from '@waves/signature-generator';
+import { Money, BigNumber, AssetPair, OrderPrice } from '@earths/data-entities';
+import { EARTHS_ID, libs, config } from '@earths/signature-generator';
 import { VALIDATORS } from './fieldValidator';
 
-const normalizeAssetId = id => id === WAVES_ID ? '' : id;
+const normalizeAssetId = id => id === EARTHS_ID ? '' : id;
 
 export module prepare {
 
@@ -184,6 +184,6 @@ export module prepare {
     }
 
     export function idToNode(id: string): string {
-        return id === WAVES_ID ? '' : id;
+        return id === EARTHS_ID ? '' : id;
     }
 }

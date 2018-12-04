@@ -1,7 +1,7 @@
-import { generate as generateTxFactory, Long, Seed, StringWithLength, utils } from '@waves/signature-generator';
-import { Asset, BigNumber, Money } from '@waves/data-entities';
+import { generate as generateTxFactory, Long, Seed, StringWithLength, utils } from '@earths/signature-generator';
+import { Asset, BigNumber, Money } from '@earths/data-entities';
 import { SeedAdapter, SIGN_TYPE } from '../src/index';
-import './WavesKeeperAdapter';
+import './EarthsKeeperAdapter';
 import './validators';
 
 

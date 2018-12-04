@@ -1,5 +1,5 @@
-import { Money, BigNumber } from '@waves/data-entities';
-import { utils, libs } from '@waves/signature-generator';
+import { Money, BigNumber } from '@earths/data-entities';
+import { utils, libs } from '@earths/signature-generator';
 
 const TRANSFERS = {
     ATTACHMENT: 140
@@ -250,7 +250,7 @@ const assetId = (options: IFieldOptions) => {
         isAssetId =  false;
     }
     
-    if (!isAssetId && value !== 'WAVES') {
+    if (!isAssetId && value !== 'EARTHS') {
         return error(options, ERROR_MSG.WRONG_ASSET_ID);
     }
 };

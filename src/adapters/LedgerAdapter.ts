@@ -1,6 +1,6 @@
 import { Adapter } from './Adapter';
 import { AdapterType } from '../config';
-import { WavesLedger } from '@waves/ledger';
+import { EarthsLedger } from '@earths/ledger';
 
 
 export class LedgerAdapter extends Adapter {
@@ -80,9 +80,9 @@ export class LedgerAdapter extends Adapter {
         return LedgerAdapter._ledger.getPaginationUsersData(from, to);
     }
 
-    public static initOptions(options: IWavesLedger) {
+    public static initOptions(options: IEarthsLedger) {
         Adapter.initOptions(options);
-        this._ledger = new WavesLedger( options );
+        this._ledger = new EarthsLedger( options );
     }
 
     public static isAvailable() {
@@ -100,7 +100,7 @@ export class LedgerAdapter extends Adapter {
     }
 }
 
-interface IWavesLedger  {
+interface IEarthsLedger  {
     networkCode: number;
     debug?: boolean;
     openTimeout?: number;
